@@ -16,20 +16,19 @@ yesButton.addEventListener("click", handleYesClick);
 noButton.addEventListener("click", function () {
   if (play) {
     noCount++;
-    const imageIndex = Math.min(noCount, MAX_IMAGES);
+    const imageIndex = noCount % MAX_IMAGES;
     changeImage(imageIndex);
     resizeYesButton();
     updateNoButtonText();
-    if (noCount === MAX_IMAGES) {
-      play = false;
-    }
   }
 });
 
 function handleYesClick() {
   titleElement.innerHTML = "Yayyy!! :3";
   buttonsContainer.classList.add("hidden");
-  changeImage("yes");
+  const urlParams = new URLSearchParams(window.location.search);
+  const i = urlParams.get('i');
+  changeImage(i);
 }
 
 function resizeYesButton() {
@@ -55,7 +54,11 @@ function generateMessage(noCount) {
 }
 
 function changeImage(image) {
-  catImg.src = `img/cat-${image}.jpg`;
+  let name = image
+  if (image === 'index.html' || !image) {
+    name = 'yes'
+  }
+  catImg.src = `img/cat-${name}.jpg`;
 }
 
 function updateNoButtonText() {
